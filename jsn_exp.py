@@ -46,7 +46,7 @@ def walk_json(json_object, key_path):
         click.echo(path_to_print[0] + " is not a valid key")
 
 @click.group(chain=True)
-def jsn():
+def cli():
     pass
 
 ## json explorer
@@ -59,7 +59,7 @@ def jsn():
 # add poetry
 # add set up tools
 
-@jsn.command("pretty")
+@cli.command("pretty")
 @click.option('-r','--raw', 'is_raw', is_flag=True, help='Display raw json.')
 @click.option('-o','--out', 'out_file', default=None, help='File to write out to.')
 @click.option('-e','--edit', 'edit_json', is_flag=True, help='Edit the json before saving.')
@@ -91,7 +91,7 @@ def pretty(is_raw, file_name, out_file, edit_json):
         click.echo(get_color_json_string(formatted_json))
 
 ## explore json
-@jsn.command("walk")
+@cli.command("walk")
 @click.option('-k','--keys', 'keys', is_flag=True, help='Display Keys.')
 @click.option('-v','--value', 'key_to_get', default=None, help='Display Value by Key.')
 @click.argument("file_name")
@@ -108,5 +108,5 @@ def walk(file_name, keys, key_to_get):
 
 
 if __name__ == "__main__":
-    jsn()
+    cli()
 
