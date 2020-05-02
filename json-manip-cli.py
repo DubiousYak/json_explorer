@@ -8,6 +8,7 @@ def get_json(file_name):
         ugly_json = raw_json.read()
 
     return json.loads(ugly_json)
+
 # is there a way to do a better highlighting scheme?
 def get_color_json_string(formatted_json):
     colorful_json = highlight(formatted_json, lexers.JsonLexer(), formatters.TerminalFormatter())
@@ -45,7 +46,7 @@ def walk_json(json_object, key_path):
         click.echo(path_to_print[0] + " is not a valid key")
 
 @click.group(chain=True)
-def jwak():
+def jsn():
     pass
 
 ## json explorer
@@ -58,7 +59,7 @@ def jwak():
 # add poetry
 # add set up tools
 
-@jwak.command("pretty")
+@jsn.command("pretty")
 @click.option('-r','--raw', 'is_raw', is_flag=True, help='Display raw json.')
 @click.option('-o','--out', 'out_file', default=None, help='File to write out to.')
 @click.option('-e','--edit', 'edit_json', is_flag=True, help='Edit the json before saving.')
@@ -71,8 +72,6 @@ def pretty(is_raw, file_name, out_file, edit_json):
 
     json_object = get_json(file_name)
 
-    # click.echo("raw json: ", nl=False)
-    # click.echo(str(ugly_json))
     if is_raw == True:
         indent_json = None
     else:
@@ -92,22 +91,22 @@ def pretty(is_raw, file_name, out_file, edit_json):
         click.echo(get_color_json_string(formatted_json))
 
 ## explore json
-@jwak.command("exp")
-@click.option('-k','--keys', 'keys', is_flag=True)
+@jsn.command("walk")
+@click.option('-k','--keys', 'keys', is_flag=True, help='Display Keys.')
 @click.option('-v','--value', 'key_to_get', default=None, help='Display Value by Key.')
 @click.argument("file_name")
-def exp(file_name, keys, key_to_get):
-    # click.echo("file name: ", nl=False)
-    # click.echo(click.style(file_name, fg='red',bold=True))
+def walk(file_name, keys, key_to_get):
 
     json_object = get_json(file_name)
 
     myMap = dict(json_object)
+
     if keys:
-        click.echo(myMap.keys())
+        click.echo(list(myMap.keys()))
     if key_to_get:
         walk_json(json_object, key_to_get)
 
+
 if __name__ == "__main__":
-    jwak()
+    jsn()
 
