@@ -49,33 +49,26 @@ def walk_json(json_object, key_path):
 def cli():
     pass
 
-## json explorer
-## other features
-# get value by nested key dog.minataure might give mini poodle and other small dogs
-# convert to YAML
-# convert from YAML
-# paginate long json files
-# get json from web address?
 # add poetry
 # add set up tools
 
-@cli.command("pretty")
-@click.option('-r','--raw', 'is_raw', is_flag=True, help='Display raw json.')
+@cli.command("look")
+@click.option('-p','--pretty', 'make_pretty', is_flag=True, help='Display formatted json.')
 @click.option('-o','--out', 'out_file', default=None, help='File to write out to.')
 @click.option('-e','--edit', 'edit_json', is_flag=True, help='Edit the json before saving.')
 @click.argument("file_name")    
-def pretty(is_raw, file_name, out_file, edit_json):
-    """Takes a JSON file and makes it so pretty."""
+def look(make_pretty, file_name, out_file, edit_json):
+    """Let's you examine and manipulate the JSON file."""
     # read file
     click.echo("file name: ", nl=False)
     click.echo(click.style(file_name, fg='red',bold=True))
 
     json_object = get_json(file_name)
 
-    if is_raw == True:
-        indent_json = None
-    else:
+    if make_pretty:
         indent_json = 4
+    else:
+        indent_json = None
 
     formatted_json = json.dumps(json_object, indent=indent_json)
 
@@ -96,7 +89,7 @@ def pretty(is_raw, file_name, out_file, edit_json):
 @click.option('-v','--value', 'key_to_get', default=None, help='Display Value by Key.')
 @click.argument("file_name")
 def walk(file_name, keys, key_to_get):
-
+    """Let's you explore and manipulate the JSON file."""
     json_object = get_json(file_name)
 
     myMap = dict(json_object)
