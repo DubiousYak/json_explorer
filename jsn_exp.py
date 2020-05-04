@@ -49,9 +49,6 @@ def walk_json(json_object, key_path):
 def cli():
     pass
 
-# add poetry
-# add set up tools
-
 @cli.command("look")
 @click.option('-p','--pretty', 'make_pretty', is_flag=True, help='Display formatted json.')
 @click.option('-o','--out', 'out_file', default=None, help='File to write out to.')
